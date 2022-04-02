@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<int, Color> _yellow700Map = {
-      50: Color.fromRGBO(3, 152, 158, 1),
+      50: const Color.fromRGBO(3, 152, 158, 1),
       100: Colors.cyan[100] as Color,
       200: Colors.cyan[200] as Color,
       300: Colors.cyan[300] as Color,
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: MaterialColor(Colors.cyan[800]!.value, _yellow700Map),
-        backgroundColor: Color.fromARGB(255, 125, 239, 243),
+        backgroundColor: const Color.fromARGB(255, 125, 239, 243),
         accentColor: Colors.cyan[800],
         accentColorBrightness: Brightness.dark,
         buttonTheme: ButtonTheme.of(context).copyWith(
