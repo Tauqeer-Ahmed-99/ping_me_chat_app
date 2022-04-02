@@ -127,10 +127,10 @@ class _LoginFormState extends State<LoginForm> {
                 }
               },
               onChanged: (_phoneNumber) {
-                userName = _phoneNumber;
+                phoneNumber = _phoneNumber;
               },
               onSaved: (_phoneNumber) {
-                userName = _phoneNumber;
+                phoneNumber = _phoneNumber;
               },
             ),
             TextFormField(
