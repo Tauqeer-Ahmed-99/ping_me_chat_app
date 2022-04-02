@@ -27,6 +27,9 @@ class _LoginFormState extends State<LoginForm> {
       });
       return;
     }
+    setState(() {
+      isValid = true;
+    });
     _form.currentState?.save();
   }
 
@@ -86,8 +89,9 @@ class _LoginFormState extends State<LoginForm> {
         child: ListView(
           children: <Widget>[
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Username",
+                labelStyle: GoogleFonts.rubik(),
               ),
               maxLines: 1,
               keyboardType: TextInputType.text,
@@ -110,8 +114,9 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Phone Number",
+                labelStyle: GoogleFonts.rubik(),
               ),
               maxLines: 1,
               keyboardType: TextInputType.number,
@@ -134,8 +139,9 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Email",
+                labelStyle: GoogleFonts.rubik(),
               ),
               maxLines: 1,
               keyboardType: TextInputType.emailAddress,
@@ -158,7 +164,10 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(labelText: "Password"),
+              decoration: InputDecoration(
+                labelText: "Password",
+                labelStyle: GoogleFonts.rubik(),
+              ),
               maxLines: 1,
               keyboardType: TextInputType.visiblePassword,
               focusNode: _passwordNode,
@@ -182,8 +191,10 @@ class _LoginFormState extends State<LoginForm> {
             ),
             if (!isLoggingIn)
               TextFormField(
-                decoration:
-                    const InputDecoration(labelText: "Confirm Password"),
+                decoration: InputDecoration(
+                  labelText: "Confirm Password",
+                  labelStyle: GoogleFonts.rubik(),
+                ),
                 maxLines: 1,
                 keyboardType: TextInputType.emailAddress,
                 focusNode: _cnfPasswordNode,
