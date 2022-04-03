@@ -99,8 +99,8 @@ class _LoginFormState extends State<LoginForm> {
                 FocusScope.of(context).requestFocus(_emailNode);
               },
               validator: (phoneNumber) {
-                if (phoneNumber == "") {
-                  return "Please enter a valid username.";
+                if (phoneNumber == "" || phoneNumber!.length < 10) {
+                  return "Please enter a valid Phone n~umber.";
                 } else {
                   return null;
                 }
