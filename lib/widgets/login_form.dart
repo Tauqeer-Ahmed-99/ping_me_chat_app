@@ -22,36 +22,14 @@ class _LoginFormState extends State<LoginForm> {
   void _saveForm() {
     var _isvalid = _form.currentState?.validate();
     if (_isvalid == null || _isvalid == false) {
-      setState(() {
-        isValid = false;
-      });
       return;
     }
-    setState(() {
-      isValid = true;
-    });
     _form.currentState?.save();
   }
 
   bool isEmailValid(String? email) {
     return email!.contains(RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"));
-  }
-
-  double height(mediaQuery) {
-    if (isLoggingIn) {
-      if (isValid) {
-        return mediaQuery.size.height - 430;
-      } else {
-        return mediaQuery.size.height - 300;
-      }
-    } else {
-      if (isValid) {
-        return mediaQuery.size.height - 300;
-      } else {
-        return mediaQuery.size.height - 250;
-      }
-    }
   }
 
   void _submitForm() {
@@ -78,12 +56,8 @@ class _LoginFormState extends State<LoginForm> {
       padding: const EdgeInsets.all(15),
       width: mediaQuery.size.width - 30,
       height: isLoggingIn
-          ? isValid
-              ? mediaQuery.size.height - 430
-              : mediaQuery.size.height - 330
-          : isValid
-              ? mediaQuery.size.height - 360
-              : mediaQuery.size.height - 265,
+          ? mediaQuery.size.height * 0.5
+          : mediaQuery.size.height * 0.7,
       child: Form(
         key: _form,
         child: ListView(

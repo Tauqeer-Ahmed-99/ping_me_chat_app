@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: MaterialColor(Colors.cyan[800]!.value, _yellow700Map),
         backgroundColor: const Color.fromARGB(255, 125, 239, 243),
-        accentColor: Colors.cyan[800],
+        accentColor: Colors.amber[300],
         accentColorBrightness: Brightness.dark,
         buttonTheme: ButtonTheme.of(context).copyWith(
             buttonColor: Colors.indigoAccent,
