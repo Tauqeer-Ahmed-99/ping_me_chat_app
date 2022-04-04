@@ -1,4 +1,4 @@
-import 'package:chat_app/screens/home_screen.dart';
+// import 'package:chat_app/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,12 +18,39 @@ class Auth extends ChangeNotifier {
         password: password,
       );
       var user = res.user;
+      print(user);
+      print(res);
       // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
-    } catch (error) {
+    } on FirebaseAuthException catch (error) {
+      var errorMessage = "";
+
+      switch (error.code) {
+        case "invalid-credential":
+          errorMessage = "Invalid Credentials";
+          break;
+        case "user-disabled":
+          errorMessage = "This user has been banned";
+          break;
+        case "user-not-found":
+          errorMessage = "User with this email doesn't exist.";
+          break;
+        case "wrong-password":
+          errorMessage = "Wrong password.";
+          break;
+        case "invalid-verification-code":
+          errorMessage = "Invalid Verification code.";
+          break;
+        case "invalid-verification-id":
+          errorMessage = "Invalid Verification id.";
+          break;
+        default:
+          errorMessage = "Something went wrong! Try again.";
+      }
+
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Something went wrong! Try again.",
+            errorMessage,
             style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           duration: const Duration(seconds: 3),
@@ -45,10 +72,29 @@ class Auth extends ChangeNotifier {
       );
       print(res);
       // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
-    } catch (e) {
+    } on FirebaseAuthException catch (error) {
+      var errorMessage = "";
+
+      switch (error.code) {
+        case "email-already-in-use":
+          errorMessage = "User with this email already exists.";
+          break;
+        case "invalid-email":
+          errorMessage = "Email is invalid.";
+          break;
+        case "operation-not-allowed":
+          errorMessage = "Authentication with email and password is disabled.";
+          break;
+        case "weak-password":
+          errorMessage = "Choose a strong password.";
+          break;
+        default:
+          errorMessage = "Something went wrong! Try again.";
+      }
+
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text("Something went wrong! Try again.",
+          content: Text(errorMessage,
               style:
                   GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.bold)),
           duration: const Duration(seconds: 3),
