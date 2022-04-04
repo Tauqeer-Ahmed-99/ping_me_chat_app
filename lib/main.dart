@@ -3,6 +3,7 @@ import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/login_screens.dart';
 import 'package:chat_app/screens/otp_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,12 +75,20 @@ class MyApp extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20))),
         ),
-        initialRoute: "/",
         routes: {
-          LoginScreen.route: (context) => const LoginScreen(),
           OtpScreen.route: (context) => const OtpScreen(),
           HomeScreen.route: (context) => const HomeScreen(),
         },
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, userSnapShot) {
+            if (userSnapShot.hasData) {
+              return const HomeScreen();
+            } else {
+              return const LoginScreen();
+            }
+          },
+        ),
       ),
     );
   }

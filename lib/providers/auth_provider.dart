@@ -18,7 +18,7 @@ class Auth extends ChangeNotifier {
         password: password,
       );
       var user = res.user;
-      Navigator.of(context).pushReplacementNamed(HomeScreen.route);
+      // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
     } catch (error) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
@@ -44,7 +44,7 @@ class Auth extends ChangeNotifier {
         password: password,
       );
       print(res);
-      Navigator.of(context).pushReplacementNamed(HomeScreen.route);
+      // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
     } catch (e) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
