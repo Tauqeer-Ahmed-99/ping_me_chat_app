@@ -1,7 +1,31 @@
+import 'package:chat_app/providers/auth_provider.dart';
+// import 'package:chat_app/providers/users_provider.dart';
+import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/login_screens.dart';
+import 'package:chat_app/screens/otp_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+import './firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // We're using the manual installation on non-web platforms since Google sign in plugin doesn't yet support Dart initialization.
+  // See related issue: https://github.com/flutter/flutter/issues/96391
+
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: FirebaseOpts.apiKey,
+      appId: FirebaseOpts.appId,
+      messagingSenderId: FirebaseOpts.messagingSenderID,
+      projectId: FirebaseOpts.projectId,
+    ),
+  );
+
+  Provider.debugCheckInvalidValueType = null;
+
   runApp(const MyApp());
 }
 
@@ -24,29 +48,39 @@ class MyApp extends StatelessWidget {
       900: Colors.cyan[700] as Color,
     };
 
-    return MaterialApp(
-      title: 'Ping ME',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: MaterialColor(Colors.cyan[800]!.value, _yellow700Map),
-        backgroundColor: const Color.fromARGB(255, 125, 239, 243),
-        accentColor: Colors.amber[300],
-        accentColorBrightness: Brightness.dark,
-        buttonTheme: ButtonTheme.of(context).copyWith(
-            buttonColor: Colors.indigoAccent,
-            textTheme: ButtonTextTheme.accent,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20))),
+    return MultiProvider(
+      providers: [
+        Provider<Auth>(create: (context) => Auth()),
+      ],
+      child: MaterialApp(
+        title: 'Ping ME',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: MaterialColor(Colors.cyan[800]!.value, _yellow700Map),
+          backgroundColor: const Color.fromARGB(255, 125, 239, 243),
+          accentColor: Colors.cyan[500],
+          accentColorBrightness: Brightness.dark,
+          buttonTheme: ButtonTheme.of(context).copyWith(
+              buttonColor: Colors.indigoAccent,
+              textTheme: ButtonTextTheme.accent,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+        ),
+        initialRoute: "/",
+        routes: {
+          LoginScreen.route: (context) => const LoginScreen(),
+          OtpScreen.route: (context) => const OtpScreen(),
+          HomeScreen.route: (context) => const HomeScreen(),
+        },
       ),
-      home: const LoginScreen(),
     );
   }
 }

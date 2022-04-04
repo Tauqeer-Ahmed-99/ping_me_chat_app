@@ -4,6 +4,8 @@ import 'package:chat_app/widgets/login_form.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
+  static const route = "/";
+
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,8 +26,18 @@ class LoginScreen extends StatelessWidget {
                 width: 250,
                 child: Image.asset("assets/gif/Ping-ME.gif"),
               ),
+              // const SizedBox(
+              //   height: 15,
+              // ),
+              // Text(
+              //   "You will receive an OTP on the number you enter below.",
+              //   style: GoogleFonts.rubik(
+              //       fontSize: 12,
+              //       fontWeight: FontWeight.w600,
+              //       color: Colors.cyan[700]),
+              // ),
               const SizedBox(
-                height: 30,
+                height: 15,
               ),
               const Card(
                 elevation: 10,
