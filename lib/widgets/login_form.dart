@@ -28,6 +28,11 @@ class _LoginFormState extends State<LoginForm> {
   var _isLoading = false;
 
   final _form = GlobalKey<FormState>();
+  final _userNameKey = GlobalKey<FormState>();
+  final _phoneKey = GlobalKey<FormState>();
+  final _emailKey = GlobalKey<FormState>();
+  final _passwordkey = GlobalKey<FormState>();
+  final _cnfPasswordkey = GlobalKey<FormState>();
 
   String userName = "";
   String phoneNumber = "";
@@ -104,64 +109,69 @@ class _LoginFormState extends State<LoginForm> {
       builder: (context, auth, child) => AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
-        height: isLoggingIn ? 370 : 430,
+        height: isLoggingIn ? 250 : 430,
         width: mediaQuery.size.width * 0.85,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Form(
           key: _form,
           child: ListView(
             children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Username",
-                  labelStyle: GoogleFonts.rubik(),
+              if (!isLoggingIn)
+                TextFormField(
+                  key: _userNameKey,
+                  decoration: InputDecoration(
+                    labelText: "Username",
+                    labelStyle: GoogleFonts.rubik(),
+                  ),
+                  maxLines: 1,
+                  keyboardType: TextInputType.text,
+                  focusNode: _userNameNode,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_phoneNumberNode);
+                  },
+                  validator: (userName) {
+                    if (userName == "") {
+                      return "Please enter a valid username.";
+                    } else {
+                      return null;
+                    }
+                  },
+                  onChanged: (_userName) {
+                    userName = _userName;
+                  },
+                  onSaved: (_userName) {
+                    userName = _userName as String;
+                  },
                 ),
-                maxLines: 1,
-                keyboardType: TextInputType.text,
-                focusNode: _userNameNode,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_phoneNumberNode);
-                },
-                validator: (userName) {
-                  if (userName == "") {
-                    return "Please enter a valid username.";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (_userName) {
-                  userName = _userName;
-                },
-                onSaved: (_userName) {
-                  userName = _userName as String;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Phone Number",
-                  labelStyle: GoogleFonts.rubik(),
+              if (!isLoggingIn)
+                TextFormField(
+                  key: _phoneKey,
+                  decoration: InputDecoration(
+                    labelText: "Phone Number",
+                    labelStyle: GoogleFonts.rubik(),
+                  ),
+                  maxLines: 1,
+                  keyboardType: TextInputType.number,
+                  focusNode: _phoneNumberNode,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_emailNode);
+                  },
+                  validator: (phoneNumber) {
+                    if (phoneNumber == "" || phoneNumber!.length < 10) {
+                      return "Please enter a valid Phone number.";
+                    } else {
+                      return null;
+                    }
+                  },
+                  onChanged: (_phoneNumber) {
+                    phoneNumber = _phoneNumber;
+                  },
+                  onSaved: (_phoneNumber) {
+                    phoneNumber = _phoneNumber as String;
+                  },
                 ),
-                maxLines: 1,
-                keyboardType: TextInputType.number,
-                focusNode: _phoneNumberNode,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_emailNode);
-                },
-                validator: (phoneNumber) {
-                  if (phoneNumber == "" || phoneNumber!.length < 10) {
-                    return "Please enter a valid Phone number.";
-                  } else {
-                    return null;
-                  }
-                },
-                onChanged: (_phoneNumber) {
-                  phoneNumber = _phoneNumber;
-                },
-                onSaved: (_phoneNumber) {
-                  phoneNumber = _phoneNumber as String;
-                },
-              ),
               TextFormField(
+                key: _emailKey,
                 decoration: InputDecoration(
                   labelText: "Email",
                   labelStyle: GoogleFonts.rubik(),
@@ -187,6 +197,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
               ),
               TextFormField(
+                key: _passwordkey,
                 decoration: InputDecoration(
                   labelText: "Password",
                   labelStyle: GoogleFonts.rubik(),
@@ -214,6 +225,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               if (!isLoggingIn)
                 TextFormField(
+                  key: _cnfPasswordkey,
                   decoration: InputDecoration(
                     labelText: "Confirm Password",
                     labelStyle: GoogleFonts.rubik(),
