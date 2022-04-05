@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth extends ChangeNotifier {
@@ -17,9 +18,14 @@ class Auth extends ChangeNotifier {
         email: email,
         password: password,
       );
-      var user = res.user;
-      print(user);
+      var userId = res.user?.uid;
+
       print(res);
+
+      var prefs = await SharedPreferences.getInstance();
+
+      prefs.setString("uid", userId as String);
+
       // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
     } on FirebaseAuthException catch (error) {
       var errorMessage = "";
@@ -70,7 +76,14 @@ class Auth extends ChangeNotifier {
         email: email,
         password: password,
       );
+      print(res.user);
       print(res);
+      var userId = res.user?.uid;
+
+      var prefs = await SharedPreferences.getInstance();
+
+      prefs.setString("uid", userId as String);
+
       // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
     } on FirebaseAuthException catch (error) {
       var errorMessage = "";
@@ -95,6 +108,24 @@ class Auth extends ChangeNotifier {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(errorMessage,
+              style:
+                  GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.bold)),
+          duration: const Duration(seconds: 3),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await firebase.signOut();
+      var prefs = await SharedPreferences.getInstance();
+      prefs.remove("uid");
+    } on FirebaseAuthException catch (error) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message as String,
               style:
                   GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.bold)),
           duration: const Duration(seconds: 3),
