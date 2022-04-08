@@ -1,5 +1,6 @@
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
+import 'package:chat_app/screens/newchat_screen.dart';
 import 'package:chat_app/widgets/recentchat_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -105,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Icons.add_comment_rounded,
             color: Colors.white,
           ),
-          onPressed: () {}),
+          onPressed: () {
+            Navigator.of(context).pushNamed(NewChatScreen.route);
+          }),
     );
   }
 }

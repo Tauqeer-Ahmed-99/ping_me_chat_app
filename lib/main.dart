@@ -3,6 +3,7 @@ import 'package:chat_app/providers/recentChats_provider.dart';
 // import 'package:chat_app/providers/users_provider.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/login_screens.dart';
+import 'package:chat_app/screens/newchat_screen.dart';
 import 'package:chat_app/screens/otp_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
         routes: {
           OtpScreen.route: (context) => const OtpScreen(),
           HomeScreen.route: (context) => const HomeScreen(),
+          NewChatScreen.route: ((context) => const NewChatScreen())
         },
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
