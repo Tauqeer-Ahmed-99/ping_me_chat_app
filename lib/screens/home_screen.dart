@@ -1,4 +1,6 @@
 import 'package:chat_app/providers/auth_provider.dart';
+import 'package:chat_app/providers/recentChats_provider.dart';
+import 'package:chat_app/widgets/recentchat_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Map<String, dynamic>> myMenuItems = [
     {"buttonName": 'Home', "buttonIcon": Icons.home},
-    {
-      "buttonName": 'Profile',
-      "buttonIcon": Icons.supervised_user_circle_rounded
-    },
+    {"buttonName": 'Profile', "buttonIcon": Icons.account_circle_sharp},
     {"buttonName": 'Setting', "buttonIcon": Icons.settings},
     {"buttonName": 'Logout', "buttonIcon": Icons.logout}
   ];
@@ -52,6 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final recentChats = Provider.of<RecentChats>(context, listen: true);
+    final mediaQuery = MediaQuery.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -60,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert_rounded),
               onSelected: (String type) => onSelect(type, context),
               itemBuilder: (BuildContext context) {
                 return myMenuItems.map((item) {
@@ -86,7 +89,23 @@ class _HomeScreenState extends State<HomeScreen> {
               })
         ],
       ),
-      body: const Center(child: Text("HomeScreen")),
+      body: ListView.builder(
+        itemCount: recentChats.recentChats.length,
+        itemBuilder: (context, i) => RecentChatTile(
+          name: recentChats.recentChats[i]["name"],
+          lastMesssage: recentChats.recentChats[i]["lastMessage"],
+          date: recentChats.recentChats[i]["date"],
+          isRead: recentChats.recentChats[i]["isRead"],
+          numberOfUnreadMessages: recentChats.recentChats[i]
+              ["numberOfNewMessages"],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(
+            Icons.add_comment_rounded,
+            color: Colors.white,
+          ),
+          onPressed: () {}),
     );
   }
 }

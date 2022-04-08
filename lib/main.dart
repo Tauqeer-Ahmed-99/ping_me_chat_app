@@ -1,4 +1,5 @@
 import 'package:chat_app/providers/auth_provider.dart';
+import 'package:chat_app/providers/recentChats_provider.dart';
 // import 'package:chat_app/providers/users_provider.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/login_screens.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<Auth>(create: (context) => Auth()),
+        Provider<RecentChats>(create: (context) => RecentChats())
       ],
       child: MaterialApp(
         title: 'Ping ME',
