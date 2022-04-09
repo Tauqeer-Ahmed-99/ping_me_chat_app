@@ -1,13 +1,17 @@
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
+import 'package:chat_app/providers/users_provider.dart';
+import 'package:chat_app/screens/chat_screen.dart';
 // import 'package:chat_app/providers/users_provider.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/login_screens.dart';
+import 'package:chat_app/screens/newchat_screen.dart';
 import 'package:chat_app/screens/otp_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './firebase_options.dart';
 
@@ -52,8 +56,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        Provider<Auth>(create: (context) => Auth()),
-        Provider<RecentChats>(create: (context) => RecentChats())
+        ChangeNotifierProvider(create: (context) => Auth()),
+        ChangeNotifierProvider(create: ((context) => RecentChats())),
+        ChangeNotifierProvider(create: (context) => UsersProvider())
       ],
       child: MaterialApp(
         title: 'Ping ME',
@@ -80,6 +85,8 @@ class MyApp extends StatelessWidget {
         routes: {
           OtpScreen.route: (context) => const OtpScreen(),
           HomeScreen.route: (context) => const HomeScreen(),
+          NewChatScreen.route: (context) => const NewChatScreen(),
+          ChatScreen.route: (context) => const ChatScreen()
         },
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

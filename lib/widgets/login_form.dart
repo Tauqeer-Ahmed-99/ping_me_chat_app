@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:provider/provider.dart';
 
@@ -87,7 +88,17 @@ class _LoginFormState extends State<LoginForm> {
           _isLoading = true;
         });
 
-        await auth.signUp(context, user.email, user.password);
+        await auth.signUp(
+          context,
+          user.email,
+          user.password,
+          user.userName,
+          user.phoneNumber,
+        );
+
+        var prefs = await SharedPreferences.getInstance();
+        prefs.setString("senderNumber", user.phoneNumber.toString());
+        prefs.setString("senderName", user.userName);
 
         setState(() {
           _isLoading = false;

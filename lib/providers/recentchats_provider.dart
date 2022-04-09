@@ -1,68 +1,65 @@
-// ignore: file_names
+import 'package:chat_app/helpers/DBhelper.dart';
+import 'package:chat_app/models/recent_chats.dart';
+
 import 'package:flutter/cupertino.dart';
 
 class RecentChats with ChangeNotifier {
-  final _recentChats = [
-    {
-      "name": "Tauqeer",
-      "lastMessage":
-          "salam kidr jaa rha hai main kl aauga pdhne k liye tu bhi aajaana smjha kya wrna mera dimaag kharaab ho jaayega.",
-      "date": DateTime.now(),
-      "isRead": false,
-      "numberOfNewMessages": 23
-    },
-    {
-      "name": "Tauqeer",
-      "lastMessage": "Bye",
-      "date": DateTime.now(),
-      "isRead": false,
-      "numberOfNewMessages": 3
-    },
-    {
-      "name": "Tauqeer",
-      "lastMessage": "Bye",
-      "date": DateTime.now(),
-      "isRead": false,
-      "numberOfNewMessages": 5
-    },
-    {
-      "name": "Tauqeer",
-      "lastMessage": "Bye",
-      "date": DateTime.now(),
-      "isRead": false,
-      "numberOfNewMessages": 6
-    },
-    {
-      "name": "Tauqeer",
-      "lastMessage": "Bye",
-      "date": DateTime.now(),
-      "isRead": true,
-      "numberOfNewMessages": 0
-    },
-    {
-      "name": "Tauqeer",
-      "lastMessage": "Bye",
-      "date": DateTime.now(),
-      "isRead": false,
-      "numberOfNewMessages": 3
-    },
-    {
-      "name": "Tauqeer",
-      "lastMessage": "Bye",
-      "date": DateTime.now(),
-      "isRead": false,
-      "numberOfNewMessages": 8
-    },
-    {
-      "name": "Tauqeer",
-      "lastMessage": "Bye",
-      "date": DateTime.now(),
-      "isRead": true,
-      "numberOfNewMessages": 0
-    },
-  ];
+  RecentChats() {
+    fetchAndSetRecentChatsFromStorage();
+  }
+  List<RecentChat> _recentChats = [];
 
-  List<Map<String, dynamic>> get recentChats {
+  List<RecentChat> get recentChats {
     return [..._recentChats];
+  }
+
+  Future<void> fetchAndSetRecentChatsFromStorage() async {
+    final dbHelper = DBHelper.instance;
+    final chats = await dbHelper.queryAllRows();
+
+    print(chats);
+
+    var recent = chats
+        .map((e) => RecentChat(
+            name: e["name"],
+            id: e["id"],
+            number: e["number"],
+            isRead: e["isRead"] == "true" ? true : false,
+            numberOfNewMessages: e["numberOfNewMessages"],
+            dateTime: e["dateTime"],
+            lastMessage: e["lastMessage"]))
+        .toList();
+
+    print(recent);
+    ;
+
+    _recentChats = recent.reversed.toList();
+
+    print("provider -> ${_recentChats.length}");
+
+    notifyListeners();
+  }
+
+  void addRecentChat(RecentChat recentChat) {
+    _recentChats
+        .removeWhere((RecentChat element) => element.name == recentChat.name);
+
+    _recentChats = [recentChat, ..._recentChats];
+
+    final dbHelper = DBHelper.instance;
+
+    dbHelper.delete(recentChat.number);
+
+    dbHelper.insert({
+      "id": recentChat.id,
+      "name": recentChat.name,
+      "number": recentChat.number,
+      "numberOfNewMessages": recentChat.numberOfNewMessages,
+      "isRead": recentChat.isRead ? "true" : "false",
+      "dateTime": recentChat.dateTime,
+      "lastMessage": recentChat.lastMessage
+    });
+
+    notifyListeners();
   }
 }
