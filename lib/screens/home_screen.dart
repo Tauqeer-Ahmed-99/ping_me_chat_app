@@ -1,5 +1,7 @@
+import 'package:chat_app/models/recent_chats.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
+import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/screens/newchat_screen.dart';
 import 'package:chat_app/widgets/recentchat_tile.dart';
 import 'package:flutter/material.dart';
@@ -50,10 +52,22 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // void initial() {
+  //   Provider.of<RecentChats>(context, listen: false)
+  //       .fetchAndSetRecentChatsFromStorage();
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   initial();
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final recentChats = Provider.of<RecentChats>(context, listen: true);
-    final mediaQuery = MediaQuery.of(context);
+    var recentChats = Provider.of<RecentChats>(context, listen: true);
+
+    // final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -90,17 +104,34 @@ class _HomeScreenState extends State<HomeScreen> {
               })
         ],
       ),
-      body: ListView.builder(
-        itemCount: recentChats.recentChats.length,
-        itemBuilder: (context, i) => RecentChatTile(
-          name: recentChats.recentChats[i]["name"],
-          lastMesssage: recentChats.recentChats[i]["lastMessage"],
-          date: recentChats.recentChats[i]["date"],
-          isRead: recentChats.recentChats[i]["isRead"],
-          numberOfUnreadMessages: recentChats.recentChats[i]
-              ["numberOfNewMessages"],
-        ),
-      ),
+      body: recentChats.recentChats.isNotEmpty
+          ? ListView.builder(
+              itemCount: recentChats.recentChats.length,
+              itemBuilder: (context, i) {
+                print(" homescreen -> ${recentChats.recentChats.length}");
+                return RecentChatTile(
+                  name: recentChats.recentChats[i].name,
+                  date: recentChats.recentChats[i].dateTime,
+                  lastMesssage: recentChats.recentChats[i].lastMessage,
+                  isRead: recentChats.recentChats[i].isRead,
+                  numberOfUnreadMessages:
+                      recentChats.recentChats[i].numberOfNewMessages,
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(ChatScreen.route, arguments: {
+                      "name": recentChats.recentChats[i].name,
+                      "phoneNumber": recentChats.recentChats[i].number
+                    });
+                  },
+                );
+              })
+          : Center(
+              child: Text(
+                "No recent chats available.\nStart chatting by clicking button below.",
+                style: GoogleFonts.rubik(fontSize: 20, color: Colors.grey[700]),
+                textAlign: TextAlign.center,
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
           child: const Icon(
             Icons.add_comment_rounded,

@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/chat_screen.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,10 +56,12 @@ class _NewChatScreenState extends State<NewChatScreen> {
                 )
               : Center(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Fetching contacts, please wait...",
-                        style: GoogleFonts.rubik(),
+                        style: GoogleFonts.rubik(
+                            fontSize: 18, color: Colors.cyan[700]),
                       ),
                       const CircularProgressIndicator(),
                     ],
@@ -85,7 +88,14 @@ class _NewChatScreenState extends State<NewChatScreen> {
                           contacts[index].phones?[0].value as String,
                           style: GoogleFonts.rubik(),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed(
+                              ChatScreen.route,
+                              arguments: {
+                                "name": contacts[index].displayName,
+                                "phoneNumber": contacts[index].phones?[0].value
+                              });
+                        },
                       )),
                 ),
     );

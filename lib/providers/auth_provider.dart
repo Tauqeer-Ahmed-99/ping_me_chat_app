@@ -70,15 +70,21 @@ class Auth extends ChangeNotifier {
     BuildContext context,
     String email,
     String password,
+    String userName,
+    String number,
   ) async {
     try {
       var res = await firebase.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      await res.user?.updateDisplayName(userName);
+
+      var userId = res.user?.uid;
+
       print(res.user);
       print(res);
-      var userId = res.user?.uid;
 
       var prefs = await SharedPreferences.getInstance();
 

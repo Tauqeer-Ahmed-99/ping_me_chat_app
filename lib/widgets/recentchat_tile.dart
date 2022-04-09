@@ -5,9 +5,10 @@ import 'package:intl/intl.dart';
 class RecentChatTile extends StatelessWidget {
   final String name;
   final String lastMesssage;
-  final DateTime date;
+  final String date;
   final bool isRead;
   final int numberOfUnreadMessages;
+  final VoidCallback onTap;
   const RecentChatTile({
     Key? key,
     required this.name,
@@ -15,6 +16,7 @@ class RecentChatTile extends StatelessWidget {
     required this.lastMesssage,
     required this.isRead,
     required this.numberOfUnreadMessages,
+    required this.onTap,
   }) : super(key: key);
 
   String setVisibleLastMessage(String message) {
@@ -29,6 +31,7 @@ class RecentChatTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListTile(
+        onTap: onTap,
         leading: const CircleAvatar(backgroundColor: Colors.cyan),
         title: Text(name, style: GoogleFonts.rubik()),
         subtitle: Text(setVisibleLastMessage(lastMesssage),
@@ -38,7 +41,7 @@ class RecentChatTile extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                DateFormat.jm().format(date),
+                DateFormat.jm().format(DateTime.parse(date)),
                 style: GoogleFonts.rubik(
                     color:
                         isRead ? Colors.grey : Theme.of(context).accentColor),
