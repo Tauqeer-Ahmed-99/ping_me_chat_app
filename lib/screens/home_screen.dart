@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
               })
           : Center(
               child: Text(
-                "No recent chats available.\nStart chatting by clicking button below.",
+                "No recent chats available.\nStart messaging by clicking button below.",
                 style: GoogleFonts.rubik(fontSize: 20, color: Colors.grey[700]),
                 textAlign: TextAlign.center,
               ),

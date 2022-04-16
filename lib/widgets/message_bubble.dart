@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class MessageBubble extends StatelessWidget {
   final String message;
@@ -22,7 +23,7 @@ class MessageBubble extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: isOnRight
-                ? Colors.grey[300]
+                ? Colors.grey[200]
                 : Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.only(
                 topLeft: isOnRight
@@ -34,15 +35,32 @@ class MessageBubble extends StatelessWidget {
                 bottomRight: const Radius.circular(12),
                 bottomLeft: const Radius.circular(12)),
           ),
-          width: mediaQuery.size.width * 0.6,
+          constraints: BoxConstraints(
+              maxWidth: mediaQuery.size.width * 0.75, minWidth: 0),
           padding: const EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 16,
           ),
           margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: Text(
-            message,
-            style: GoogleFonts.rubik(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                message,
+                style: GoogleFonts.rubik(),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: mediaQuery.size.width * 0.75, minWidth: 0),
+                child: Text(
+                  "${DateFormat.jm().format(DateTime.parse(dateTime))} ${DateFormat.yMMMd().format(DateTime.parse(dateTime)) == DateFormat.yMMMd().format(DateTime.now()) ? " • today" : DateFormat.y().format(DateTime.parse(dateTime)) == DateFormat.y().format(DateTime.now()) ? " • ${DateFormat.MMMd().format(DateTime.parse(dateTime))}" : " • ${DateFormat.yMMMd().format(DateTime.parse(dateTime))}"}",
+                  style: GoogleFonts.rubik(color: Colors.grey, fontSize: 12),
+                ),
+              ),
+            ],
           ),
         ),
       ],

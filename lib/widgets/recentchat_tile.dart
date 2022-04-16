@@ -21,9 +21,10 @@ class RecentChatTile extends StatelessWidget {
 
   String setVisibleLastMessage(String message) {
     const acceptableLength = 35;
-    return message.length < acceptableLength
+    var messageWithoutLineBreaks = message.replaceAll("\n", " ");
+    return messageWithoutLineBreaks.length < acceptableLength
         ? message
-        : "${message.substring(0, acceptableLength)}...";
+        : "${messageWithoutLineBreaks.substring(0, acceptableLength)}...";
   }
 
   @override

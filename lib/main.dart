@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primarySwatch: MaterialColor(Colors.cyan[800]!.value, _yellow700Map),
-          backgroundColor: const Color.fromARGB(255, 125, 239, 243),
+          backgroundColor: Color.fromARGB(255, 163, 243, 246),
           accentColor: Colors.cyan[500],
           accentColorBrightness: Brightness.dark,
           buttonTheme: ButtonTheme.of(context).copyWith(
