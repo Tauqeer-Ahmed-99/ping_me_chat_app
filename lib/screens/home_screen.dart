@@ -1,4 +1,4 @@
-import 'package:chat_app/models/recent_chats.dart';
+// import 'package:chat_app/models/recent_chats.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
 import 'package:chat_app/screens/chat_screen.dart';
@@ -6,6 +6,7 @@ import 'package:chat_app/screens/newchat_screen.dart';
 import 'package:chat_app/widgets/recentchat_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,6 +63,16 @@ class _HomeScreenState extends State<HomeScreen> {
   //   super.initState();
   //   initial();
   // }
+
+  void showNewChatScreen() async {
+    PermissionStatus status = await Permission.contacts.status;
+
+    if (status.isDenied) {
+      await Permission.contacts.request();
+    } else {
+      Navigator.of(context).pushNamed(NewChatScreen.route);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,9 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Icons.add_comment_rounded,
             color: Colors.white,
           ),
-          onPressed: () {
-            Navigator.of(context).pushNamed(NewChatScreen.route);
-          }),
+          onPressed: showNewChatScreen),
     );
   }
 }
