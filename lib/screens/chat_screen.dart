@@ -1,8 +1,6 @@
-import 'dart:ffi';
-
 import 'package:chat_app/models/recent_chats.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
-import 'package:chat_app/providers/users_provider.dart';
+// import 'package:chat_app/providers/users_provider.dart';
 import 'package:chat_app/widgets/messageBubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
     var senderNumber = "";
     var senderName = "";
 
-    var uniqueAddress = "";
+    // var uniqueAddress = "";
 
     String cleanRecieverNumber(String number) {
       return number
@@ -70,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       // print(nlist.join("").toString());
 
-      uniqueAddress = nlist.join("").toString();
+      // uniqueAddress = nlist.join("").toString();
       return nlist.join("").toString();
     }
 
@@ -78,7 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
         future: createUniqueAddress(userNumber),
         builder: (BuildContext context, AsyncSnapshot<String> futureSnapshot) {
           print("uniqueAddress => ${futureSnapshot.data}");
-          print(senderName);
+          print("senderName -> " + senderName);
 
           return Scaffold(
             appBar: AppBar(
