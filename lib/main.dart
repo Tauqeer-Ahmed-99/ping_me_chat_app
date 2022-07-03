@@ -47,9 +47,9 @@ class MyApp extends StatelessWidget {
       400: Colors.cyan[400] as Color,
       500: Colors.cyan[500] as Color,
       600: Colors.cyan[600] as Color,
-      700: Colors.cyan[800] as Color,
-      800: Colors.cyan[900] as Color,
-      900: Colors.cyan[700] as Color,
+      700: Colors.cyan[700] as Color,
+      800: Colors.cyan[800] as Color,
+      900: Colors.cyan[900] as Color,
     };
 
     return MultiProvider(
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           backgroundColor: const Color.fromARGB(255, 163, 243, 246),
           buttonTheme: ButtonTheme.of(context).copyWith(
-              buttonColor: Colors.indigoAccent,
+              buttonColor: MaterialColor(Colors.cyan[600]!.value, _cyan700Map),
               textTheme: ButtonTextTheme.accent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20))), colorScheme: ColorScheme.fromSwatch(primarySwatch: MaterialColor(Colors.cyan[800]!.value, _cyan700Map)).copyWith(secondary: Colors.cyan[500]),
