@@ -1,8 +1,8 @@
-// import 'package:chat_app/models/recent_chats.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/screens/newchat_screen.dart';
+import 'package:chat_app/screens/profile_screen.dart';
 import 'package:chat_app/widgets/recentchat_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,24 +22,24 @@ class _HomeScreenState extends State<HomeScreen> {
   var _isLoading = false;
 
   List<Map<String, dynamic>> myMenuItems = [
-    {"buttonName": 'Home', "buttonIcon": Icons.home},
+    // {"buttonName": 'Home', "buttonIcon": Icons.home},
     {"buttonName": 'Profile', "buttonIcon": Icons.account_circle_sharp},
-    {"buttonName": 'Setting', "buttonIcon": Icons.settings},
+    // {"buttonName": 'Setting', "buttonIcon": Icons.settings},
     {"buttonName": 'Logout', "buttonIcon": Icons.logout}
   ];
 
   void onSelect(item, BuildContext context) async {
     final auth = Provider.of<Auth>(context, listen: false);
     switch (item) {
-      case 'Home':
-        print('Home clicked');
-        break;
+      // case 'Home':
+      //   print('Home clicked');
+      //   break;
       case 'Profile':
-        print('Profile clicked');
+        Navigator.of(context).pushNamed(ProfileScreen.route);
         break;
-      case 'Setting':
-        print('Setting clicked');
-        break;
+      // case 'Setting':
+      //   print('Setting clicked');
+      //   break;
       case 'Logout':
         setState(() {
           _isLoading = true;
@@ -48,22 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           _isLoading = false;
         });
-        print('Logout clicked');
         break;
     }
   }
-
-  // void initial() {
-  //   Provider.of<RecentChats>(context, listen: false)
-  //       .fetchAndSetRecentChatsFromStorage();
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   initial();
-  // }
-
   void showNewChatScreen() async {
     PermissionStatus status = await Permission.contacts.status;
 
@@ -77,9 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var recentChats = Provider.of<RecentChats>(context, listen: true);
-
-    // final mediaQuery = MediaQuery.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -119,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ? ListView.builder(
               itemCount: recentChats.recentChats.length,
               itemBuilder: (context, i) {
-                print(" homescreen -> ${recentChats.recentChats.length}");
                 return RecentChatTile(
                   name: recentChats.recentChats[i].name,
                   date: recentChats.recentChats[i].dateTime,
@@ -127,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   isRead: recentChats.recentChats[i].isRead,
                   numberOfUnreadMessages:
                       recentChats.recentChats[i].numberOfNewMessages,
+                  phone: recentChats.recentChats[i].number,
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed(ChatScreen.route, arguments: {

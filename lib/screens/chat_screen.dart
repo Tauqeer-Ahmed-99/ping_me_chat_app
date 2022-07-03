@@ -1,12 +1,11 @@
 import 'package:chat_app/models/recent_chats.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
-// import 'package:chat_app/providers/users_provider.dart';
 import 'package:chat_app/widgets/message_bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatefulWidget {
   static const route = "/chatscreen";
@@ -34,41 +33,16 @@ class _ChatScreenState extends State<ChatScreen> {
     var userNumber = arguments["phoneNumber"];
     var userName = arguments["name"];
 
-    // var senderNumber = "";
-    var senderNumber = "";
-    var senderName = "";
-
-    // var uniqueAddress = "";
-
-    String cleanRecieverNumber(String number) {
-      return number
-          .replaceAll("(", "")
-          .replaceAll(")", "")
-          .replaceAll("-", "")
-          .replaceAll("+91", "")
-          .replaceAll(" ", "");
-    }
+    var firebase = FirebaseAuth.instance;
+    var senderNumber = firebase.currentUser!.displayName!.substring(0, 10);
 
     Future<String> createUniqueAddress(value1) async {
-      // print(value1);
-
-      var prefs = await SharedPreferences.getInstance();
-
-      senderName = prefs.getString("senderName") as String;
-      senderNumber = prefs.getString("senderNumber") as String;
       String receiverNumber = value1;
 
-      String cleanReceiverNumber = cleanRecieverNumber(receiverNumber);
 
-      // print(cleanReceiverNumber);
-      // print(widget.senderNumber);
-
-      var nlist = [int.parse(cleanReceiverNumber), int.parse(senderNumber)];
+      var nlist = [int.parse(receiverNumber), int.parse(senderNumber)];
       nlist.sort((a, b) => a.compareTo(b));
 
-      // print(nlist.join("").toString());
-
-      // uniqueAddress = nlist.join("").toString();
       return nlist.join("").toString();
     }
 
@@ -76,7 +50,6 @@ class _ChatScreenState extends State<ChatScreen> {
       return Container(
         width: mediaquery.size.width * 0.99,
         margin: const EdgeInsets.symmetric(vertical: 4),
-        // height: 40,
         child: Row(
           children: [
             Expanded(
@@ -137,14 +110,13 @@ class _ChatScreenState extends State<ChatScreen> {
                       .add({
                     "message": inputController.text.trim(),
                     "senderNumber": senderNumber,
-                    "senderName": senderName,
                     "datetime": DateTime.now().toIso8601String()
                   });
 
                   recentChats.addRecentChat(
                     RecentChat(
                       name: userName,
-                      number: cleanRecieverNumber(userNumber),
+                      number: userNumber,
                       lastMessage: inputController.text.trim(),
                       dateTime: DateTime.now().toIso8601String(),
                       isRead: true,
@@ -164,8 +136,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return FutureBuilder(
         future: createUniqueAddress(userNumber),
         builder: (BuildContext context, AsyncSnapshot<String> futureSnapshot) {
-          print("uniqueAddress => ${futureSnapshot.data}");
-          print("senderName -> " + senderName);
 
           return Scaffold(
             appBar: AppBar(
@@ -200,7 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             return MessageBubble(
                               message: data["message"],
                               dateTime: data["datetime"],
-                              isOnRight: data["senderName"] == senderName
+                              isOnRight: data["senderNumber"] == senderNumber
                                   ? true
                                   : false,
                             );

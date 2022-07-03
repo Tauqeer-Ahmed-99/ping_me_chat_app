@@ -1,17 +1,15 @@
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/providers/recentChats_provider.dart';
-import 'package:chat_app/providers/users_provider.dart';
 import 'package:chat_app/screens/chat_screen.dart';
-// import 'package:chat_app/providers/users_provider.dart';
 import 'package:chat_app/screens/home_screen.dart';
 import 'package:chat_app/screens/login_screens.dart';
 import 'package:chat_app/screens/newchat_screen.dart';
 import 'package:chat_app/screens/otp_screen.dart';
+import 'package:chat_app/screens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import './firebase_options.dart';
 
@@ -23,11 +21,11 @@ void main() async {
 
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: FirebaseOpts.apiKey,
-      appId: FirebaseOpts.appId,
-      messagingSenderId: FirebaseOpts.messagingSenderID,
-      projectId: FirebaseOpts.projectId,
-    ),
+        apiKey: FirebaseOpts.apiKey,
+        appId: FirebaseOpts.appId,
+        messagingSenderId: FirebaseOpts.messagingSenderID,
+        projectId: FirebaseOpts.projectId,
+        storageBucket: FirebaseOpts.storageBucket),
   );
 
   Provider.debugCheckInvalidValueType = null;
@@ -41,7 +39,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final Map<int, Color> _yellow700Map = {
+    final Map<int, Color> _cyan700Map = {
       50: const Color.fromRGBO(3, 152, 158, 1),
       100: Colors.cyan[100] as Color,
       200: Colors.cyan[200] as Color,
@@ -58,7 +56,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => Auth()),
         ChangeNotifierProvider(create: ((context) => RecentChats())),
-        ChangeNotifierProvider(create: (context) => UsersProvider())
       ],
       child: MaterialApp(
         title: 'Ping ME',
@@ -72,21 +69,19 @@ class MyApp extends StatelessWidget {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primarySwatch: MaterialColor(Colors.cyan[800]!.value, _yellow700Map),
-          backgroundColor: Color.fromARGB(255, 163, 243, 246),
-          accentColor: Colors.cyan[500],
-          accentColorBrightness: Brightness.dark,
+          backgroundColor: const Color.fromARGB(255, 163, 243, 246),
           buttonTheme: ButtonTheme.of(context).copyWith(
               buttonColor: Colors.indigoAccent,
               textTheme: ButtonTextTheme.accent,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20))),
+                  borderRadius: BorderRadius.circular(20))), colorScheme: ColorScheme.fromSwatch(primarySwatch: MaterialColor(Colors.cyan[800]!.value, _cyan700Map)).copyWith(secondary: Colors.cyan[500]),
         ),
         routes: {
           OtpScreen.route: (context) => const OtpScreen(),
           HomeScreen.route: (context) => const HomeScreen(),
           NewChatScreen.route: (context) => const NewChatScreen(),
-          ChatScreen.route: (context) => const ChatScreen()
+          ChatScreen.route: (context) => const ChatScreen(),
+          ProfileScreen.route: (context) => const ProfileScreen()
         },
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

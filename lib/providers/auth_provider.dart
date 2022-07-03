@@ -1,9 +1,7 @@
-// import 'package:chat_app/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth extends ChangeNotifier {
   final firebase = FirebaseAuth.instance;
@@ -26,7 +24,6 @@ class Auth extends ChangeNotifier {
 
       prefs.setString("uid", userId as String);
 
-      // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
     } on FirebaseAuthException catch (error) {
       var errorMessage = "";
 
@@ -78,19 +75,16 @@ class Auth extends ChangeNotifier {
         email: email,
         password: password,
       );
+      var userNameAndPhone = number + userName;
 
-      await res.user?.updateDisplayName(userName);
+      await res.user?.updateDisplayName(userNameAndPhone);
+      await firebase.currentUser?.updateEmail(email);
 
       var userId = res.user?.uid;
-
-      print(res.user);
-      print(res);
-
       var prefs = await SharedPreferences.getInstance();
 
       prefs.setString("uid", userId as String);
 
-      // Navigator.of(context).pushReplacementNamed(HomeScreen.route);
     } on FirebaseAuthException catch (error) {
       var errorMessage = "";
 

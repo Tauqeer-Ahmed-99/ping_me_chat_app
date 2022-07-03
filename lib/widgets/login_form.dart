@@ -1,15 +1,9 @@
-// import 'package:chat_app/providers/users_provider.dart';
-// import 'package:chat_app/screens/home_screen.dart';
-// import 'package:chat_app/screens/otp_screen.dart';
 import 'package:chat_app/providers/auth_provider.dart';
-// import 'package:chat_app/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:provider/provider.dart';
 
 import '../models/user.dart' as _user;
 
@@ -57,21 +51,12 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    // final auth = Provider.of<Auth>(context);
-
-    // final usersData = Provider.of<UsersProvider>(context);
-
     void _submitForm(auth) async {
       var user = _user.User(
           userName: userName,
           phoneNumber: phoneNumber,
           email: email,
           password: password);
-
-      print(user.userName);
-      print(user.phoneNumber);
-      print(user.email);
-      print(user.password);
 
       if (isLoggingIn) {
         setState(() {

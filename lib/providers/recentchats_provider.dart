@@ -16,9 +16,7 @@ class RecentChats with ChangeNotifier {
   Future<void> fetchAndSetRecentChatsFromStorage() async {
     final dbHelper = DBHelper.instance;
     final chats = await dbHelper.queryAllRows();
-
-    print(chats);
-
+    
     var recent = chats
         .map((e) => RecentChat(
             name: e["name"],
@@ -27,22 +25,17 @@ class RecentChats with ChangeNotifier {
             isRead: e["isRead"] == "true" ? true : false,
             numberOfNewMessages: e["numberOfNewMessages"],
             dateTime: e["dateTime"],
-            lastMessage: e["lastMessage"]))
+            lastMessage: e["lastMessage"],))
         .toList();
 
-    print(recent);
-    ;
-
     _recentChats = recent.reversed.toList();
-
-    print("provider -> ${_recentChats.length}");
 
     notifyListeners();
   }
 
   void addRecentChat(RecentChat recentChat) {
-    _recentChats
-        .removeWhere((RecentChat element) => element.name == recentChat.name);
+    _recentChats.removeWhere(
+        (RecentChat element) => element.number == recentChat.number);
 
     _recentChats = [recentChat, ..._recentChats];
 

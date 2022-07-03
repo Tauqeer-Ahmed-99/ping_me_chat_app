@@ -1,5 +1,5 @@
-import 'package:chat_app/screens/chat_screen.dart';
-// import 'package:contacts_service/contacts_service.dart';
+
+import 'package:chat_app/widgets/new_chats.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -45,6 +45,15 @@ class _NewChatScreenState extends State<NewChatScreen> {
     });
   }
 
+  String cleanPhoneNumber(String number) {
+    return number
+        .replaceAll("(", "")
+        .replaceAll(")", "")
+        .replaceAll("-", "")
+        .replaceAll("+91", "")
+        .replaceAll(" ", "");
+  }
+  
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -60,12 +69,12 @@ class _NewChatScreenState extends State<NewChatScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const CircularProgressIndicator(),
                       Text(
-                        "Fetching contacts, please wait...",
+                        "Loading, please wait...",
                         style: GoogleFonts.rubik(
                             fontSize: 18, color: Colors.cyan[700]),
                       ),
-                      const CircularProgressIndicator(),
                     ],
                   ),
                 )
@@ -100,29 +109,10 @@ class _NewChatScreenState extends State<NewChatScreen> {
                       child: ListView.builder(
                         itemCount: contacts.length,
                         itemBuilder: ((context, index) {
-                          print(contacts[index].phones);
-                          return ListTile(
-                            leading: const CircleAvatar(
-                              child: Icon(Icons.account_circle_rounded),
-                            ),
-                            title: Text(
-                              contacts[index].displayName,
-                              style: GoogleFonts.rubik(),
-                            ),
-                            subtitle: Text(
-                              contacts[index].phones[0].number,
-                              style: GoogleFonts.rubik(),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pushReplacementNamed(
-                                  ChatScreen.route,
-                                  arguments: {
-                                    "name": contacts[index].displayName,
-                                    "phoneNumber":
-                                        contacts[index].phones[0].number
-                                  });
-                            },
-                          );
+                          return NewChatTile(
+                              name: contacts[index].displayName,
+                              number:
+                                  cleanPhoneNumber(contacts[index].phones[0].number.toString()));
                         }),
                       ),
                     )
